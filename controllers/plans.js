@@ -1,5 +1,5 @@
-import Plan from "../models/plan";
-import catchAsync from "../utils/catchAsync";
+import Plan from "../models/plan.js";
+import catchAsync from "../utils/catchAsync.js";
 
 const getAllPlans = catchAsync(async (_req, res) => {
   const plans = await Plan.find();

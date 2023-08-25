@@ -18,7 +18,7 @@ const planSchema = new mongoose.Schema({
     required: true,
   },
   resolution: {
-    type: String,
+    type: Number,
     required: true,
   },
   devices: {

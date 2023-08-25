@@ -2,8 +2,9 @@ import express from "express";
 import dotenv from "dotenv";
 import morgan from "morgan";
 import userRoutes from "./routes/user.js";
-
-// import globalErrorHandler from "./utils/globalErrorHandler.js";
+import planRoutes from "./routes/plans.js";
+import { auth } from "./middleware/auth.js";
+import { errorLogger, errorHandler } from "./middleware/error.js";
 
 dotenv.config();
 
@@ -23,11 +24,13 @@ app.use(morgan("dev"));
 app.use(express.json());
 
 app.get("/", (_req, res) => {
-  res.json({ chats: "Hello bhai" });
+  res.json({ message: "Welcome to the API" });
 });
 
 app.use("/api/user", userRoutes);
-// app.use("/api/chat", chatRoutes);
+app.use("/api/plan", auth, planRoutes);
 
-// app.use(globalErrorHandler);
+app.use(errorLogger);
+app.use(errorHandler);
+
 export default app;

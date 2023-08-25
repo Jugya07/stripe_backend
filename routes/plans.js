@@ -7,3 +7,5 @@ router
   .route("/")
   .get(planController.getAllPlans)
   .post(planController.createPlan);
+
+export default router;
