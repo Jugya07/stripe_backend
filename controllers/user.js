@@ -54,4 +54,40 @@ const login = catchAsync(async (req, res, next) => {
   });
 });
 
-export default { signup, login };
+const getPlan = catchAsync(async (req, res) => {
+  const { _id } = req.user;
+  const user = await User.findById(_id).populate("plan");
+  return res.json({
+    status: "success",
+    message: "Plan fetched",
+    plan: user.plan,
+    isMonthly: user.isMonthly,
+    updatedAt: user.updatedAt,
+  });
+});
+
+const setPlan = catchAsync(async (req, res) => {
+  const { userId, planId, isMonth } = req.body;
+  const user = await User.findById(userId);
+  user.plan = planId;
+  user.isMonthly = isMonth;
+  await user.save();
+  return res.json({
+    status: "success",
+    message: "Plan added",
+    user: user,
+  });
+});
+
+const deletePlan = catchAsync(async (req, res) => {
+  const { _id } = req.user;
+  const user = await User.findById(_id);
+  user.plan = null;
+  user.isMonthly = false;
+  await user.save();
+  return res.json({
+    status: "success",
+  });
+});
+
+export default { signup, login, getPlan, setPlan, deletePlan };

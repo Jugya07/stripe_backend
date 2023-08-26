@@ -1,12 +1,11 @@
-import express from "express";
 import dotenv from "dotenv";
+dotenv.config("./.env");
+import express from "express";
 import morgan from "morgan";
 import userRoutes from "./routes/user.js";
 import planRoutes from "./routes/plans.js";
-import { auth } from "./middleware/auth.js";
+import checkoutRoutes from "./routes/checkout.js";
 import { errorLogger, errorHandler } from "./middleware/error.js";
-
-dotenv.config();
 
 const app = express();
 
@@ -27,8 +26,13 @@ app.get("/", (_req, res) => {
   res.json({ message: "Welcome to the API" });
 });
 
+app.options("*", (_req, res) => {
+  return res.status(200).json("success");
+});
+
 app.use("/api/user", userRoutes);
-app.use("/api/plan", auth, planRoutes);
+app.use("/api/plan", planRoutes);
+app.use("/api/create_session_checkout", checkoutRoutes);
 
 app.use(errorLogger);
 app.use(errorHandler);
